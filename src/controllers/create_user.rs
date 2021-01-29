@@ -1,7 +1,6 @@
 extern crate diesel;
 
 use crate::models::users::User;
-use crate::controllers::create_user;
 use actix_web::{web, HttpRequest, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
@@ -10,6 +9,9 @@ pub struct UserData {
     name: String,
 }
 
-pub fn routes(cfg: &mut web::ServiceConfig) {
-    cfg.route("/users", web::post().to(create_user::create));
+pub async fn create(item: web::Json<UserData>) -> HttpResponse {
+    let user = User::create(&(item.name));
+    println!("{:?}",user);
+    HttpResponse::Created().body("Inserting")
+
 }
