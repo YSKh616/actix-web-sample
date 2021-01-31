@@ -12,5 +12,6 @@ pub struct UserData {
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/users", web::get().to(index::index))
+        .route("/users", web::get().to(latest::latest))
         .route("/users", web::post().to(create_user::create));
 }
