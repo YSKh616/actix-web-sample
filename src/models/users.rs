@@ -23,6 +23,15 @@ impl User {
             .expect("Error loading users")
     }
 
+    pub fn latest() -> User {
+        use self::users::id;
+        let connection = establish_connection();
+        users::dsl::users
+            .order(id.desc())
+            .first::<User>(&connection)
+            .expect("Error loading users")
+    }
+
     pub fn create(name: &str) -> User {
         use self::users::id;
         let new_user = NewUser { name: name };
