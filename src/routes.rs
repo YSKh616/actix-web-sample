@@ -3,6 +3,7 @@ extern crate diesel;
 use crate::controllers::create_user;
 use crate::controllers::index;
 use crate::controllers::latest;
+use crate::controllers::create_post;
 use actix_web::{web, HttpRequest, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
@@ -14,5 +15,6 @@ pub struct UserData {
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/users", web::get().to(index::index))
         .route("/user", web::get().to(latest::latest))
-        .route("/users", web::post().to(create_user::create));
+        .route("/users", web::post().to(create_user::create))
+        .route("/posts", web::post().to(create_post::create));
 }
