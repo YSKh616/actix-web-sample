@@ -9,27 +9,30 @@ pub struct Post {
     pub user_id: i32,
     pub title: String,
     pub body: String,
-    // pub created_at: Datetime,
-    // pub updated_at: Datetime
     pub created_at: Option<NaiveDateTime>,
     pub updated_at: Option<NaiveDateTime>,
 }
 
 #[derive(Insertable)]
 #[table_name = "posts"]
-pub struct NewPost<'a> {
-    title: &'a str,
-    body:  &'a str
+pub struct NewPost {
+    user_id: i32,
+    title: String,
+    body:  String,
 }
 
 impl Post {
-    pub fn create(title: &str, body: &str) -> Post {
-        // use self::posts::id;
-        let new_post = NewPost { title: title, body: body };
+    pub fn create(title: String, body: String) -> Post {
+        use self::posts::id;
+        let new_post = NewPost { user_id: 1i32, title: title, body: body };
         let connection = establish_connection();
         diesel::insert_into(posts::table)
             .values(&new_post)
             .execute(&connection)
             .expect("Error saving new post");
+        posts::dsl::posts
+            .order(id.desc())
+            .first::<Post>(&connection)
+            .expect("Error finding posts")
     }
 }
