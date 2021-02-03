@@ -1,6 +1,7 @@
 use crate::util::establish_connection;
 use diesel::prelude::*;
 use crate::schema::posts;
+use chrono::{NaiveDateTime};
 
 #[derive(Debug, Queryable)]
 pub struct Post {
@@ -10,6 +11,8 @@ pub struct Post {
     pub body: String,
     // pub created_at: Datetime,
     // pub updated_at: Datetime
+    pub created_at: Option<NaiveDateTime>,
+    pub updated_at: Option<NaiveDateTime>,
 }
 
 #[derive(Insertable)]
