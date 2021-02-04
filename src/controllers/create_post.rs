@@ -11,7 +11,7 @@ pub struct PostData {
 }
 
 pub async fn create(item: web::Json<PostData>) -> HttpResponse {
-    let post = Post::create(&(item.title), &(item.body));
+    let post = Post::create(item.title.to_string(), item.body.to_string());
     println!("{:?}", post);
     HttpResponse::Created().body("Inserting")
 }

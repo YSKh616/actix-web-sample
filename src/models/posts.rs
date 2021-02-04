@@ -1,7 +1,7 @@
 use crate::util::establish_connection;
 use diesel::prelude::*;
 use crate::schema::posts;
-use chrono::{NaiveDateTime};
+use chrono::{DateTime};
 
 #[derive(Debug, Queryable)]
 pub struct Post {
@@ -9,8 +9,8 @@ pub struct Post {
     pub user_id: i32,
     pub title: String,
     pub body: String,
-    pub created_at: Option<NaiveDateTime>,
-    pub updated_at: Option<NaiveDateTime>,
+    pub created_at: Option<DateTime>,
+    pub updated_at: Option<DateTime>,
 }
 
 #[derive(Insertable)]
@@ -24,6 +24,8 @@ pub struct NewPost {
 impl Post {
     pub fn create(title: String, body: String) -> Post {
         use self::posts::id;
+        // let utc: DateTime<Utc>= Utc::now();
+        // let naive: NaiveDateTime = utc.naive_local();
         let new_post = NewPost { user_id: 1i32, title: title, body: body };
         let connection = establish_connection();
         diesel::insert_into(posts::table)
